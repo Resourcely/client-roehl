@@ -26,18 +26,18 @@ public with sharing class TenstreetListenerDataTest{
 		system.assertEquals('IntelliApp - GYCDL', data.applicationData.appSource);
 		system.assertEquals('2016-07-26 02:25:10', data.applicationData.lastApplicationDate);
 
-		system.assertEquals('Get Your CDL', data.applicationData.CustomDataElements.customDataElementsMap.get('experience').CustomDataValue);
-		system.assertEquals('NOT FOUND ON APPLICATION', data.applicationData.CustomDataElements.customDataElementsMap.get('division').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('disqualifiedReason').CustomDataValue);
-		system.assertEquals('No Reply', data.applicationData.CustomDataElements.customDataElementsMap.get('declinedReason').CustomDataValue);
-		system.assertEquals('NOT FOUND ON APPLICATION', data.applicationData.CustomDataElements.customDataElementsMap.get('fleet').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('rehireReligible').CustomDataValue);
-		system.assertEquals('direct', data.applicationData.CustomDataElements.customDataElementsMap.get('applicationReferrerCode').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingFirstActivity').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingLastActivity').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingList').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingScore').CustomDataValue);
-		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingGrade').CustomDataValue);
+		system.assertEquals('Get Your CDL', data.applicationData.CustomDataElements.customDataElementsMap.get('experience'));
+		system.assertEquals('NOT FOUND ON APPLICATION', data.applicationData.CustomDataElements.customDataElementsMap.get('division'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('disqualifiedReason'));
+		system.assertEquals('No Reply', data.applicationData.CustomDataElements.customDataElementsMap.get('declinedReason'));
+		system.assertEquals('NOT FOUND ON APPLICATION', data.applicationData.CustomDataElements.customDataElementsMap.get('fleet'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('rehireReligible'));
+		system.assertEquals('direct', data.applicationData.CustomDataElements.customDataElementsMap.get('applicationReferrerCode'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingFirstActivity'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingLastActivity'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingList'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingScore'));
+		system.assertEquals('', data.applicationData.CustomDataElements.customDataElementsMap.get('marketingGrade'));
 
 	}
 

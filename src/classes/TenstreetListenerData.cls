@@ -44,18 +44,18 @@ global class TenstreetListenerData {
 
     public void process(Dom.XmlNode inNode){
 
-
-
+    	personalData = new PersonalData();
+    	applicationData = new ApplicationData();
+            	
         for(Dom.XmlNode innerNode :inNode.getChildElements()){
             if(innerNode.getName() == 'DriverId'){
                 driverId = innerNode.getText();
             } else if(innerNode.getName() ==  'CompanyId'){
                 companyId = innerNode.getText();
             } else if(innerNode.getName() == 'PersonalData'){
-            	personalData = new PersonalData();
+            	
             	personalData.process(innerNode);
             }else if(innerNode.getName() == 'ApplicationData'){
-            	applicationData = new ApplicationData();
             	applicationData.process(innerNode);
             }
             
@@ -71,10 +71,10 @@ global class TenstreetListenerData {
 		public String appSource;
 		public String lastApplicationDate;
 
-		public CustomDataElements customDataElements;
+		public CustomDataElements customDataElements = new CustomDataElements();
 
 		public void process(Dom.XmlNode inNode){
-	        for(Dom.XmlNode innerNode :inNode.getChildElements()){
+			for(Dom.XmlNode innerNode :inNode.getChildElements()){
 	            if(innerNode.getName() ==  'Status'){
 	                status = innerNode.getText();
 	            }else if(innerNode.getName() == 'AppSource'){
@@ -82,7 +82,6 @@ global class TenstreetListenerData {
 	            }else if(innerNode.getName() == 'LastApplicationDate'){
 	            	lastApplicationDate = innerNode.getText();
 	            }else if(innerNode.getName() == 'CustomDataElements'){
-            		customDataElements = new CustomDataElements();
             		customDataElements.process(innerNode);
             	}
             
@@ -92,16 +91,15 @@ global class TenstreetListenerData {
 
 	global class CustomDataElements{
 
-		public Map<String, CustomDataElement> customDataElementsMap;
+		public Map<String, String> customDataElementsMap = new Map<String, String>();
 
 		public void process(Dom.XmlNode inNode){
-			customDataElementsMap = new Map<String, CustomDataElement>();
 			for(Dom.XmlNode innerNode :inNode.getChildElements()){
 	    		if(innerNode.getName() == 'CustomDataElement'){
 	                CustomDataElement customDataElement = new CustomDataElement();
 	                customDataElement.process(innerNode);
 	                if (requiredCustomElements.contains(customDataElement.customDataId))
-	                	customDataElementsMap.put(customDataElement.customDataId, customDataElement);
+	                	customDataElementsMap.put(customDataElement.customDataId, customDataElement.customDataValue);
 	            }
 	        }
 	    }
@@ -136,21 +134,25 @@ global class TenstreetListenerData {
 		public CommunicationPreferences communicationPreferences;
 
 		public void process(Dom.XmlNode inNode){
+			personName = new PersonName();
+			postalAddress = new PostalAddress();
+			contactData = new ContactData();
+			communicationPreferences = new CommunicationPreferences();
+	            	
+	            	
+	            	
+	            	
 	        for(Dom.XmlNode innerNode :inNode.getChildElements()){
 	            if(innerNode.getName() == 'PersonName'){
-	            	personName = new PersonName();
 	            	personName.process(innerNode);
 	            }
 	            else if(innerNode.getName() == 'PostalAddress'){
-	            	postalAddress = new PostalAddress();
 	            	postalAddress.process(innerNode);
 	            }
 	            else if(innerNode.getName() == 'ContactData'){
-	            	contactData = new ContactData();
 	            	contactData.process(innerNode);
 	            }
 	            else if(innerNode.getName() == 'CommunicationPreferences'){
-	            	communicationPreferences = new CommunicationPreferences();
 	            	communicationPreferences.process(innerNode);
 	            }
 	        }

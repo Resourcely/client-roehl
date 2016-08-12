@@ -14,31 +14,37 @@ global with sharing class TenstreetListener {
         String responseDesc = '';
         TenstreetListenerData data;
         String flag = ACCEPTED_FLAG;
+        Contact con;
+            
 
         try{
             data = TenstreetListenerData.parseTenstreetData(req.requestBody.toString());
-
             List<Contact> matchingContacts = [Select Id, FirstName, LastName, Email,
                                             MailingStreet, MailingPostalCode,
                                             MailingCity, Phone from Contact 
                                         where Email =: data.personalData.contactData.InternetEmailAddress];
             if (matchingContacts.size() == 0){
                 //create contact
-                Contact con = new Contact();
+                con = new Contact();
                 setContactFields(con, data);
                 insert con;
                 responseDesc = 'New record created.';
 
             }else{
-
-                setContactFields(matchingContacts[0], data);
-                update matchingContacts[0];
+                con = matchingContacts[0];
+                setContactFields(con, data);
+                update con;
                 responseDesc = 'Existing record updated';
-                flag = REJECTED_FLAG;
+
             }
         }catch(Exception e){
             responseDesc = e.getMessage();
+            flag = REJECTED_FLAG;
+
+            
         }
+        createTenstreetHistoryRecord(con.Id, flag, responseDesc);
+        res.addHeader('Content-Type','text/xml');
         res.responseBody = Blob.valueOf(generateResponse(flag, responseDesc, data.driverId));
     }
 
@@ -54,7 +60,20 @@ global with sharing class TenstreetListener {
 
     }
 
+    private static void createTenstreetHistoryRecord(Id contactId, String flag, String description){
+        Tenstreet_History__c th = new Tenstreet_History__c();
+        th.Action__c = 'Updated from Tenstreet';
+        th.Result__c = flag;
+        th.Contact__c = contactId;
+        th.Description__c = description;
+        insert th;
+    
+    }
+
     private static void setContactFields(Contact con, TenstreetListenerData data){
+        Org_Settings__c settings = Org_Settings__c.getInstance();
+
+        con.AccountId = settings.Tenstreet_Account_Id__c;
         con.FirstName = data.personalData.personName.givenName;
         con.LastName = data.personalData.personName.familyName;
         con.Email = data.personalData.contactData.internetEmailAddress;
@@ -70,19 +89,19 @@ global with sharing class TenstreetListener {
         con.Text_Opt_Out__c = !(data.personalData.communicationPreferences.textOptIn);
         con.TS_Status__c = data.applicationData.status;
         con.TS_App_Source__c = data.applicationData.appSource;
-        con.TS_Last_App_Date__c = DateTime.parse(data.applicationData.lastApplicationDate);
-        con.Marketing_Score__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingScore').customDataValue;
-        con.Marketing_Grade__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingGrade').customDataValue;
-        con.TS_Experience__c = data.applicationData.customDataElements.customDataElementsMap.get('experience').customDataValue;
-        con.TS_Division__c = data.applicationData.customDataElements.customDataElementsMap.get('division').customDataValue;
-        con.TS_Disqualified_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('disqualifiedReason').customDataValue;
-        con.TS_Declined_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('declinedReason').customDataValue;
-        con.TS_First_Activity__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity').customDataValue;
-        con.TS_Last_Activity__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity').customDataValue;
-        con.TS_Fleet__c = data.applicationData.customDataElements.customDataElementsMap.get('fleet').customDataValue;
-        con.TS_Rehire_Eligible__c = data.applicationData.customDataElements.customDataElementsMap.get('rehireEligible').customDataValue;
-        con.TS_Source__c = data.applicationData.customDataElements.customDataElementsMap.get('applicationReferrerCode').customDataValue;
-        con.TS_Marketing_List__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingList').customDataValue;
+        con.TS_Last_App_Date__c = (data.applicationData.lastApplicationDate != null) ? DateTime.valueOf(data.applicationData.lastApplicationDate) : null;
+        con.pi__score__c = Decimal.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingScore'));
+        con.pi__grade__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingGrade');
+        con.TS_Experience__c = data.applicationData.customDataElements.customDataElementsMap.get('experience');
+        con.TS_Division__c = data.applicationData.customDataElements.customDataElementsMap.get('division');
+        con.TS_Disqualified_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('disqualifiedReason');
+        con.TS_Declined_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('declinedReason');
+        con.pi__first_activity__c = DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity'));
+        con.pi__last_activity__c = DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity'));
+        con.TS_Fleet__c = data.applicationData.customDataElements.customDataElementsMap.get('fleet');
+        con.TS_Rehire_Eligible__c = data.applicationData.customDataElements.customDataElementsMap.get('rehireReligible');
+        con.TS_Source__c = data.applicationData.customDataElements.customDataElementsMap.get('applicationReferrerCode');
+        con.TS_Marketing_List__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingList');
 
     }
     
