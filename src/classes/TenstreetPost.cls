@@ -81,9 +81,9 @@ public with sharing class TenstreetPost {
                 xml.writeStartElement(null, 'SubjectSearchData', null);
                     writeNode('DriverId', String.valueOf(contact.Driver_Id__c), xml);
                     //writeNode('InternetEmailAddress', contact.Email, xml);
-                    //xml.writeStartElement(null, 'PersonName', null);
-                    //    writeNode('FamilyName', contact.LastName, xml);
-                    //xml.writeEndElement();
+                    xml.writeStartElement(null, 'PersonName', null);
+                        writeNode('FamilyName', contact.LastName, xml);
+                    xml.writeEndElement();
                 xml.writeEndElement();
 
 
