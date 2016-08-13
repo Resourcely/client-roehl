@@ -1,3 +1,8 @@
+/* 
+* Creates HTTP REST endpoint to Tenstreet to POST new/updated prospects to
+* @author Mark Troupe
+* @since 08.08.2016 (MM.dd.yyyy)
+*/
 @RestResource(urlMapping='/listener/*')
 global with sharing class TenstreetListener {
 
@@ -90,14 +95,20 @@ global with sharing class TenstreetListener {
         con.TS_Status__c = data.applicationData.status;
         con.TS_App_Source__c = data.applicationData.appSource;
         con.TS_Last_App_Date__c = (data.applicationData.lastApplicationDate != null) ? DateTime.valueOf(data.applicationData.lastApplicationDate) : null;
-        con.pi__score__c = Decimal.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingScore'));
+        con.pi__score__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingScore') != null)
+                ? Decimal.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingScore'))
+                : null;
         con.pi__grade__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingGrade');
         con.TS_Experience__c = data.applicationData.customDataElements.customDataElementsMap.get('experience');
         con.TS_Division__c = data.applicationData.customDataElements.customDataElementsMap.get('division');
         con.TS_Disqualified_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('disqualifiedReason');
         con.TS_Declined_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('declinedReason');
-        con.pi__first_activity__c = DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity'));
-        con.pi__last_activity__c = DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity'));
+        con.pi__first_activity__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity') != null) 
+                ? DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity'))
+                : null;
+        con.pi__last_activity__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity') != null)
+                ? DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity'))
+                : null;
         con.TS_Fleet__c = data.applicationData.customDataElements.customDataElementsMap.get('fleet');
         con.TS_Rehire_Eligible__c = data.applicationData.customDataElements.customDataElementsMap.get('rehireReligible');
         con.TS_Source__c = data.applicationData.customDataElements.customDataElementsMap.get('applicationReferrerCode');

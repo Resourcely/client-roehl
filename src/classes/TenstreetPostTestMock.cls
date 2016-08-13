@@ -9,10 +9,10 @@ global class TenstreetPostTestMock implements HttpCalloutMock {
 	global HTTPResponse respond(HTTPRequest req) {
         
     	String resBody;
-        String emailAddr = req.getBody().substringBetween('<InternetEmailAddress>','</InternetEmailAddress>');
-        Boolean isUpdate = req.getBody().contains('SubjectSearchData');
+        String driverId = req.getBody().substringBetween('<DriverId>','</DriverId>');
+        //Boolean isUpdate = req.getBody().contains('SubjectSearchData');
 
-        if (emailAddr == 'match@test.com' && isUpdate){
+        if (driverId == '999999991'){
 
 			resBody = '<?xml version="1.0" encoding="UTF-8"?>' +
 			'<TenstreetResponse>' +
@@ -26,7 +26,7 @@ global class TenstreetPostTestMock implements HttpCalloutMock {
 			    '<FieldsUpdated>0</FieldsUpdated>' +
 			'</TenstreetResponse>';
 
-    	}else if (emailAddr == 'dontmatch@test.com' && isUpdate){
+    	}else if (driverId == '999999992'){
     		resBody = '<?xml version="1.0" encoding="UTF-8"?>' +
 			'<TenstreetResponse>' +
 			    '<Version>1.0</Version>' +
@@ -39,7 +39,7 @@ global class TenstreetPostTestMock implements HttpCalloutMock {
 			    '<FieldsUpdated>0</FieldsUpdated>' +
 			'</TenstreetResponse>';
 
-    	}else if (emailAddr == 'dontmatch@test.com' && !isUpdate){
+    	}/*else if (emailAddr == 'dontmatch@test.com' && !isUpdate){
     		resBody = '<?xml version="1.0" encoding="UTF-8"?>' +
 			'<TenstreetResponse>' +
 			    '<Version>1.0</Version>' +
@@ -52,7 +52,7 @@ global class TenstreetPostTestMock implements HttpCalloutMock {
 			    '<FieldsUpdated>0</FieldsUpdated>' +
 			'</TenstreetResponse>';
 
-    	}
+    	}*/
 		
          
         // Create a fake response
