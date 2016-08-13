@@ -161,8 +161,8 @@ global class TenstreetListenerData {
 
 	global class CommunicationPreferences{
 
-		public Boolean emailOptIn = false;
-		public Boolean textOptIn = false;
+		public Boolean emailOptIn;
+		public Boolean textOptIn;
 
 		public void process(Dom.XmlNode inNode){
 	        for(Dom.XmlNode innerNode :inNode.getChildElements()){

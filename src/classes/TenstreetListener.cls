@@ -90,8 +90,8 @@ global with sharing class TenstreetListener {
         con.Driver_Id__c = Integer.valueOf(data.driverId);
         con.Phone = data.personalData.contactData.primaryPhone;
         con.OtherPhone = data.personalData.contactData.secondaryPhone;
-        con.HasOptedOutOfEmail = !(data.personalData.communicationPreferences.emailOptIn);
-        con.Text_Opt_Out__c = !(data.personalData.communicationPreferences.textOptIn);
+        con.HasOptedOutOfEmail = (data.personalData.communicationPreferences.emailOptIn == false);
+        con.Text_Opt_Out__c = (data.personalData.communicationPreferences.textOptIn == false);
         con.TS_Status__c = data.applicationData.status;
         con.TS_App_Source__c = data.applicationData.appSource;
         con.TS_Last_App_Date__c = (data.applicationData.lastApplicationDate != null) ? DateTime.valueOf(data.applicationData.lastApplicationDate) : null;
