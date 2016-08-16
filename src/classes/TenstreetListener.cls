@@ -27,7 +27,8 @@ global with sharing class TenstreetListener {
             List<Contact> matchingContacts = [Select Id, FirstName, LastName, Email,
                                             MailingStreet, MailingPostalCode,
                                             MailingCity, Phone from Contact 
-                                        where Email =: data.personalData.contactData.InternetEmailAddress];
+                                        where Driver_Id__c =: Integer.valueOf(data.DriverId)
+                                        and LastName =: data.personalData.personName.familyName];
             if (matchingContacts.size() == 0){
                 //create contact
                 con = new Contact();
