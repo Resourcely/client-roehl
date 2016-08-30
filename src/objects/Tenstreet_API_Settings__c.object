@@ -38,6 +38,15 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Enabled__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Untick to disable the outgoing Tenstreet integration.</description>
+        <externalId>false</externalId>
+        <label>Enabled</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Password__c</fullName>
         <description>Password for authentication</description>
         <externalId>false</externalId>

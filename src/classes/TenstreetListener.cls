@@ -44,7 +44,7 @@ global with sharing class TenstreetListener {
 
             }
         }catch(Exception e){
-            responseDesc = e.getMessage();
+            responseDesc = (e.getMessage() + '\n' + e.getStackTraceString()).left(255);
             flag = REJECTED_FLAG;
 
             
@@ -96,7 +96,7 @@ global with sharing class TenstreetListener {
         con.TS_Status__c = data.applicationData.status;
         con.TS_App_Source__c = data.applicationData.appSource;
         con.TS_Last_App_Date__c = (data.applicationData.lastApplicationDate != null) ? DateTime.valueOf(data.applicationData.lastApplicationDate) : null;
-        con.pi__score__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingScore') != null)
+        con.pi__score__c = (!String.isBlank(data.applicationData.customDataElements.customDataElementsMap.get('marketingScore')))
                 ? Decimal.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingScore'))
                 : null;
         con.pi__grade__c = data.applicationData.customDataElements.customDataElementsMap.get('marketingGrade');
@@ -104,10 +104,10 @@ global with sharing class TenstreetListener {
         con.TS_Division__c = data.applicationData.customDataElements.customDataElementsMap.get('division');
         con.TS_Disqualified_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('disqualifiedReason');
         con.TS_Declined_Reason__c = data.applicationData.customDataElements.customDataElementsMap.get('declinedReason');
-        con.pi__first_activity__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity') != null) 
+       	con.pi__first_activity__c = (!String.isBlank(data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity'))) 
                 ? DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingFirstActivity'))
                 : null;
-        con.pi__last_activity__c = (data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity') != null)
+       	con.pi__last_activity__c = (!String.isBlank(data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity')))
                 ? DateTime.valueOf(data.applicationData.customDataElements.customDataElementsMap.get('marketingLastActivity'))
                 : null;
         con.TS_Fleet__c = data.applicationData.customDataElements.customDataElementsMap.get('fleet');

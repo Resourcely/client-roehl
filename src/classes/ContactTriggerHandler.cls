@@ -77,7 +77,8 @@ public with sharing class ContactTriggerHandler {
                                     MailingState,
                                     MailingPostalCode,
                                     Driver_Id__c,
-                                    pi__grade__c from Contact where Id in: contactIds];
+                                    pi__grade__c 
+                                    from Contact where Id in: contactIds];
         for (Contact c : contacts){
             TenstreetPost post = new TenstreetPost(c);
             Tenstreet_History__c th = post.doPost();

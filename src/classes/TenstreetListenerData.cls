@@ -47,7 +47,7 @@ global class TenstreetListenerData {
     	personalData = new PersonalData();
     	applicationData = new ApplicationData();
             	
-        for(Dom.XmlNode innerNode :inNode.getChildElements()){
+        for (Dom.XmlNode innerNode : inNode.getChildElements()){
             if(innerNode.getName() == 'DriverId'){
                 driverId = innerNode.getText();
             } else if(innerNode.getName() ==  'CompanyId'){
@@ -161,8 +161,8 @@ global class TenstreetListenerData {
 
 	global class CommunicationPreferences{
 
-		public Boolean emailOptIn;
-		public Boolean textOptIn;
+		public Boolean emailOptIn = false;
+		public Boolean textOptIn = false;
 
 		public void process(Dom.XmlNode inNode){
 	        for(Dom.XmlNode innerNode :inNode.getChildElements()){
